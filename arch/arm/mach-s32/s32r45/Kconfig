@@ -1,0 +1,56 @@
+# SPDX-License-Identifier: GPL-2.0+
+# Copyright 2022-2023 NXP
+
+if ARCH_S32R45
+
+choice
+	prompt "S32R45 board select"
+	default TARGET_S32R45EVB
+
+config TARGET_S32R45EVB
+	bool "Support S32R45EVB board"
+	help
+	  This board is based on S32R45 SoC. Is is equipped with
+	  4GB of RAM, 64MB of QSPI memory, PCIe slot, serial port,
+	  I2C and DSPI.
+	imply ADC
+	imply CMD_EEPROM
+	imply I2C_EEPROM
+	imply NXP_S32CC_BOARD_COMMON
+	imply PHY_AQUANTIA
+	imply PHY_FIXED
+	imply PHY_MICREL
+	imply PHY_MICREL_KSZ90X1
+	imply SARADC_S32CC
+	select LAST_STAGE_INIT
+	select SPI_FLASH_MACRONIX
+	select SPI_FLASH_MX25UW51245G
+	select SPI_FLASH_SOFT_RESET
+	select SPI_FLASH_SOFT_RESET_ON_BOOT
+
+config TARGET_S32R45RENAN
+	bool "Support S32R45RENAN board"
+	help
+	  This board is a NovTech board based on S32R45 SoC.
+	imply ADC
+	imply CMD_EEPROM
+	imply I2C_EEPROM
+	imply NXP_S32CC_BOARD_COMMON
+	imply SARADC_S32CC
+	imply RGMII
+	imply NVME
+	imply PHY_XWAY
+	select ID_EEPROM
+	select BOARD_EARLY_INIT_R
+
+config TARGET_S32R45EMU
+	bool "Support S32R45 ZeBu"
+	select TARGET_TYPE_S32CC_EMULATOR
+
+endchoice
+
+source "board/nxp/s32r45evb/Kconfig"
+source "board/nxp/s32r45emu/Kconfig"
+source "board/novtech/s32r45renan/Kconfig"
+
+endif

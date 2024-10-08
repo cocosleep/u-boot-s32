@@ -1,0 +1,59 @@
+# SPDX-License-Identifier: GPL-2.0+
+# Copyright 2022-2023 NXP
+
+if TARGET_S32G274ABLUEBOX3
+
+config SYS_CONFIG_NAME
+	default "s32g274abluebox3"
+
+config SYS_BOARD
+	default "s32g274abluebox3"
+
+config NR_DRAM_BANKS
+	default 2
+
+config ENV_SECT_SIZE
+	default 0x1000 if QSPI_BOOT
+
+config SYS_EEPROM_PAGE_WRITE_DELAY_MS
+	default 10
+
+config SYS_EEPROM_SIZE
+	default 128
+
+config ID_EEPROM
+	default y
+
+config SYS_I2C_EEPROM_ADDR
+	default 0x57 if ID_EEPROM
+
+config SYS_I2C_EEPROM_ADDR_LEN
+	default 2 if ID_EEPROM
+
+config OF_BOARD_SETUP
+	default y
+
+config S32CC_HWCONFIG
+	string "S32CC HWConfig definition"
+	depends on PHY_S32CC_SERDES
+	default "serdes0:mode=pcie,clock=ext;pcie0:mode=ep;serdes1:mode=xpcs0,clock=int,fmhz=100;xpcs1_0:speed=1G"
+	help
+	  The configuration for the SerDes modules, stored in
+	  the variable 'hwconfig'.
+	  It configures generic attributes for 'serdesX', such as 'mode' (see below),
+	  the clock type (internal or external),
+	  clock frequency 'fmhz' (100 or 125, SGMII only modes), 'pcieX' mode
+	  ('rc' or 'ep') and the 'xpcsX_Y' interfaces for any of the two lanes.
+	  In the atributes presented above and below, 'X' (0 or 1) is the index
+	  of the SerDes module and 'Y' (0 or 1) is the index of the XPCS interface.
+	  SerDes 'mode' attribute can be 'pcie' (PCIe only mode), 'pcie&xpcsY' (PCIe
+	  and SGMII combo mode), 'xpcs0&xpcs1' (SGMII only mode).
+	  For the combo modes 'pcie&xpcsY', lane0 is PCIe and lane1
+	  is connected to a GMAC or PFE MAC depending on 'Y' and 'fmhz' (which
+	  match a certain SerDes configuration from the SerDes manual).
+	  PCIe always works at 100MHz, therefore 'fmhz' is only for SGMII only mode.
+	  Config 'xpcsX_Y' is used to specifically configure each of the two SGMII
+	  PHYs, by setting the 'speed' (10M, 100M, 1G and 2G5).
+	  S32G2 has 1 GMAC running at 1Gbps and 3 PFE MACs, running at 10Mbps - 2.5Gbps speeds.
+
+endif
