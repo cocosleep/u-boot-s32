@@ -130,3 +130,4 @@ config ENV_OFFSET
 
 source "arch/arm/mach-s32/s32-cc/Kconfig"
 source "board/nxp/s32/Kconfig"
+source "board/alpha/s32/Kconfig"
