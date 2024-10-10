@@ -21,22 +21,22 @@
  * enum board_type - RDB board type
  * @RDB: unknown RDB board
  * @RDB2: S32G-VNP-RDB2
- * @RDB3: S32G-VNP-RDB3
+ * @ALPHA: S32G3-ALPHA
  */
 enum board_type {
 	RDB = 0,
 	RDB2 = 2,
-	RDB3 = 3,
+	ALPHA = 3,
 };
 
-struct rdb_revisions {
+struct alpha_revisions {
 	const char *rev;
 	const char *desc;
 	u32 lower;
 	u32 upper;
 };
 
-static const struct rdb_revisions rdb2_revisions[] = {
+static const struct alpha_revisions rdb2_revisions[] = {
 	{ /* 0V */
 		.rev = "",
 		.desc = "RDB2",
@@ -60,20 +60,20 @@ static const struct rdb_revisions rdb2_revisions[] = {
 	},
 };
 
-static const struct rdb_revisions rdb3_revisions[] = {
+static const struct alpha_revisions alpha_revisions[] = {
 	{ /* 0V */
 		.rev = "",
-		.desc = "RDB3",
+		.desc = "ALPHA",
 		.lower = 0,
 		.upper = 400,
 	}, { /* 1.2V */
 		.rev = "E",
-		.desc = "RDB3 Revision E",
+		.desc = "ALPHA Revision E",
 		.lower = 2730 - SARADC0_TOLERANCE,
 		.upper = 2730 + SARADC0_TOLERANCE,
 	}, { /* 1.4V */
 		.rev = "F",
-		.desc = "RDB3 Revision F",
+		.desc = "ALPHA Revision F",
 		.lower = 3185 - SARADC0_TOLERANCE,
 		.upper = 3185 + SARADC0_TOLERANCE,
 	},
@@ -113,7 +113,7 @@ static int get_board_type(enum board_type *board)
 		*board = RDB2;
 		break;
 	case 3:
-		*board = RDB3;
+		*board = ALPHA;
 		break;
 	default:
 		*board = RDB;
@@ -162,9 +162,9 @@ static int get_adc_value(u32 *adc_value)
 	return 0;
 }
 
-static struct rdb_revisions *find_rdb_rev(enum board_type board, u32 adc_value)
+static struct alpha_revisions *find_rdb_rev(enum board_type board, u32 adc_value)
 {
-	const struct rdb_revisions *array;
+	const struct alpha_revisions *array;
 	size_t array_size;
 	size_t i;
 
@@ -173,9 +173,9 @@ static struct rdb_revisions *find_rdb_rev(enum board_type board, u32 adc_value)
 		array = rdb2_revisions;
 		array_size = ARRAY_SIZE(rdb2_revisions);
 		break;
-	case RDB3:
-		array = rdb3_revisions;
-		array_size = ARRAY_SIZE(rdb3_revisions);
+	case ALPHA:
+		array = alpha_revisions;
+		array_size = ARRAY_SIZE(alpha_revisions);
 		break;
 	default:
 		return NULL;
@@ -183,7 +183,7 @@ static struct rdb_revisions *find_rdb_rev(enum board_type board, u32 adc_value)
 
 	for (i = 0; i < array_size; i++)
 		if (array[i].lower <= adc_value && adc_value <= array[i].upper)
-			return (struct rdb_revisions *)&array[i];
+			return (struct alpha_revisions *)&array[i];
 
 	return NULL;
 }
@@ -192,7 +192,7 @@ int board_late_init(void)
 {
 	enum board_type board;
 	u32 adc_value = 0;
-	struct rdb_revisions *rdb;
+	struct alpha_revisions *rdb;
 	int ret;
 
 	printf("Board revision:\t");

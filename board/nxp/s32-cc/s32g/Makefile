@@ -7,3 +7,4 @@
 obj-y				+= ../
 obj-$(CONFIG_NXP_S32GRDB_BOARD) += s32gxxxardb.o
 obj-$(CONFIG_NXP_S32GEVB_BOARD) += s32gxxxaevb.o
+obj-$(CONFIG_ALPHA_S32G_ALPHA_BOARD) += s32gxxxa-alpha.o
