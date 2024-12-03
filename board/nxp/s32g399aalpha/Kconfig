@@ -1,13 +1,13 @@
 # SPDX-License-Identifier: GPL-2.0+
 # Copyright 2022 NXP
 
-if TARGET_S32G399A_ALPHA
+if TARGET_S32G399AALPHA
 
 config SYS_CONFIG_NAME
-	default "s32g399a-alpha"
+	default "s32g399aalpha"
 
 config SYS_BOARD
-	default "s32g399a-alpha"
+	default "s32g399aalpha"
 
 config NR_DRAM_BANKS
 	default 2

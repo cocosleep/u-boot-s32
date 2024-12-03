@@ -18,8 +18,8 @@ config TARGET_S32G399ARDB3
 	imply MMC_UHS_SUPPORT
 	select NXP_S32GRDB_BOARD
 
-config TARGET_S32G399A_ALPHA
-	bool "Support S32G399A-ALPHA board"
+config TARGET_S32G399AALPHA
+	bool "Support S32G399AALPHA board"
 	help
 	  This board is based on S32G399A SoC. It is equipped with
 	  4 GB of RAM, 64MB of QSPI memory, 6 Ethernet Ports, PCIe slot,
@@ -88,6 +88,6 @@ source "board/nxp/s32g3xxaevb/Kconfig"
 source "board/nxp/s32g3xxaevb3/Kconfig"
 source "board/nxp/s32g399asom/Kconfig"
 source "board/nxp/s32g399aemu/Kconfig"
-source "board/nxp/s32g399a-alpha/Kconfig"
+source "board/nxp/s32g399aalpha/Kconfig"
 
 endif
