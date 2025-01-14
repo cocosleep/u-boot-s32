@@ -15,6 +15,14 @@ config TARGET_S32G274ARDB2
 	  USB, serial port, 18 CAN ports, I2C and DSPI.
 	select NXP_S32GRDB_BOARD
 
+config TARGET_S32G274AALPHA
+	bool "Support S32G274A-ALPHA board"
+	help
+	  This board is based on S32G274A SoC. It is equipped with
+	  4 GB of RAM, 64MB of QSPI memory, 6 Ethernet Ports, PCIe slot,
+	  USB, serial port, 18 CAN ports, I2C and DSPI.
+	select NXP_S32GALPHA_BOARD
+
 config TARGET_S32G2XXAEVB
 	bool "Support S32G2-EVB board"
 	help

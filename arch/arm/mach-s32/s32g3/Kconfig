@@ -18,6 +18,17 @@ config TARGET_S32G399ARDB3
 	imply MMC_UHS_SUPPORT
 	select NXP_S32GRDB_BOARD
 
+config TARGET_S32G399AALPHA
+	bool "Support S32G399A-ALPHA board"
+	help
+	  This board is based on S32G399A SoC. It is equipped with
+	  4 GB of RAM, 64MB of QSPI memory, 6 Ethernet Ports, PCIe slot,
+	  serial port, 18 CAN ports, I2C and DSPI.
+	imply CMD_EEPROM
+	imply I2C_EEPROM
+	imply MMC_UHS_SUPPORT
+	select NXP_S32GALPHA_BOARD
+
 config TARGET_S32G3XXAEVB
 	bool "Support S32G3-EVB board"
 	help
