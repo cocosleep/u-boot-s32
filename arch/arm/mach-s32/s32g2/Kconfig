@@ -1,0 +1,65 @@
+# SPDX-License-Identifier: GPL-2.0+
+# Copyright 2022-2023 NXP
+
+if ARCH_S32G2
+
+choice
+	prompt "S32G2 board select"
+	default TARGET_S32G274ARDB2
+
+config TARGET_S32G274ARDB2
+	bool "Support S32G274ARDB2 board"
+	help
+	  This board is based on S32G274A SoC. It is equipped with
+	  4 GB of RAM, 64MB of QSPI memory, 6 Ethernet Ports, PCIe slot,
+	  USB, serial port, 18 CAN ports, I2C and DSPI.
+	select NXP_S32GRDB_BOARD
+
+config TARGET_S32G2XXAEVB
+	bool "Support S32G2-EVB board"
+	help
+	  This board is based on S32G2 family of SoCs. It is equipped with
+	  4 GB of RAM, 64MB of QSPI memory, PCIe slot, USB, serial port,
+	  I2C and DSPI.
+	imply DM_USB
+	imply SAF1508BET_USB_PHY
+	imply USB
+	imply USB_EHCI_HCD
+	imply USB_ULPI
+	select NXP_S32GEVB_BOARD
+	select MISC_INIT_R
+
+config TARGET_S32G2XXAEVB3
+	bool "Support S32G2-EVB3 board"
+	help
+	  This board is based on S32G2 family of SoCs. It is equipped with
+	  4 GB of RAM, 64MB of QSPI memory, PCIe slot, USB, serial port,
+	  I2C and DSPI.
+	select NXP_S32GEVB3_BOARD
+
+config TARGET_S32G274ABLUEBOX3
+	bool "Support S32G274A BlueBox3 board"
+	help
+	  This board is a dual SoC board with S32G2 and LX2,
+	  where these two SoCs are connected together via PCIe.
+	  Also, this board has rich networking features, such as:
+	  PFE, DPAA2 and three sja1110 switches.
+	select NXP_S32G274ABLUEBOX3_BOARD
+
+config TARGET_S32G274AEMU
+	bool "Support S32G274A ZeBu"
+	select TARGET_TYPE_S32CC_EMULATOR
+
+endchoice
+
+config NXP_PFENG
+	default y if !TARGET_TYPE_S32CC_EMULATOR
+
+source "board/nxp/s32-cc/s32g/Kconfig"
+source "board/nxp/s32g274ardb2/Kconfig"
+source "board/nxp/s32g2xxaevb/Kconfig"
+source "board/nxp/s32g2xxaevb3/Kconfig"
+source "board/nxp/s32g274abluebox3/Kconfig"
+source "board/nxp/s32g274aemu/Kconfig"
+
+endif

@@ -1,0 +1,85 @@
+config NXP_S32GRDB_BOARD
+	bool
+	default n
+	imply BOARD_LATE_INIT
+	imply CMD_PMIC
+	imply DM_PMIC
+	imply DM_PMIC_FS5600
+	imply DM_PMIC_PF5020
+	imply DM_PMIC_VR5510
+	imply NXP_S32CC_BOARD_COMMON
+	imply PHY_MICREL
+	imply PHY_MICREL_KSZ90X1
+	select ADC
+	select DM_REGULATOR
+	select OF_BOARD_SETUP
+	select SARADC_S32CC
+	select SPI_FLASH_MACRONIX
+	select SPI_FLASH_MX25UW51245G
+	select SPI_FLASH_SOFT_RESET
+	select SPI_FLASH_SOFT_RESET_ON_BOOT
+
+config NXP_S32GEVB3_BOARD
+	bool
+	default n
+	select NXP_S32GEVB_BOARD
+
+config NXP_S32GEVB_BOARD
+	bool
+	default n
+	imply ADC
+	imply CMD_EEPROM
+	imply CMD_PMIC
+	imply DM_PMIC
+	imply DM_PMIC_VR5510
+	imply I2C_EEPROM
+	imply NXP_S32CC_BOARD_COMMON
+	imply PHY
+	imply PHY_MICREL
+	imply PHY_MICREL_KSZ90X1
+	imply SARADC_S32CC
+	imply SJA1105X
+	select MISC_INIT_R
+	select SPI_FLASH_MACRONIX
+	select SPI_FLASH_MX25UW51245G
+	select SPI_FLASH_SOFT_RESET
+	select SPI_FLASH_SOFT_RESET_ON_BOOT
+
+config NXP_S32G274ABLUEBOX3_BOARD
+	bool
+	default n
+	imply CMD_EEPROM
+	imply CMD_GPIO
+	imply CMD_PMIC
+	imply DM_PMIC
+	imply DM_PMIC_VR5510
+	imply GPIO_HOG
+	imply I2C_EEPROM
+	imply NXP_S32CC_BOARD_COMMON
+	imply PHY
+	imply PHYLIB
+	imply PHY_GIGE
+	imply PHY_ATHEROS
+	imply SARADC_S32CC
+	select SPI_FLASH_MT35XU
+	select SPI_FLASH_STMICRO
+	select SPI_FLASH_SOFT_RESET
+	select SPI_FLASH_SOFT_RESET_ON_BOOT
+
+config NXP_S32G3VCBASE_BOARD
+	bool
+	default n
+	select NXP_S32G3VC_BOARD
+
+config NXP_S32G3VCSOM_BOARD
+	bool
+	default n
+	select NXP_S32G3VC_BOARD
+
+config NXP_S32G3VC_BOARD
+	bool
+	default n
+	imply BOARD_LATE_INIT
+	imply NXP_S32CC_BOARD_COMMON
+	select SYSINFO
+	select SYSINFO_GPIO

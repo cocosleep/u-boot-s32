@@ -1,0 +1,154 @@
+# SPDX-License-Identifier: GPL-2.0+
+# Copyright 2022-2024 NXP
+
+if NXP_S32CC
+
+config BUILD_TARGET
+	default "u-boot-s32.cfgout"
+
+config S32CC_QSPI_FREQ
+	int "QSPI frequency setting (MHz) used in order to set BootROM's clock"
+	default 200
+
+config BOARD_NFS_BOOT_INTERFACE
+	string "Board NFS Boot Interface"
+	default "br0" if TARGET_S32G274ABLUEBOX3
+	default "eth0"
+
+config S32CC_HWCONFIG_LEGACY
+	bool "Legacy S32CC HWConfig definition"
+	default y
+	depends on PHY_S32CC_SERDES
+	help
+	  Support for old format for variable HWCONFIG. Each SerDes
+	  is identified by the string 'pcieX' and is configured by a list of
+	  attributes such as 'mode' (rc, ep, sgmii) and the clock type
+	  (internal or external).
+	  It is also possible to configure combo modes, either 'ep&sgmii' or
+	  'rc&sgmii', with these configurations lane0 is PCIe and lane1
+	  is connected to GMAC of PFE mac depending on 'xpcs_mode'.
+	  'sgmii' mode uses additional config options 'fmhz' and 'xpcs_mode'.
+	  Config 'xpcs_mode' is used to specifically configure each line in
+	  SGMII mode. The following are valid options: '2G5', 'both', '0' and
+	  '1'. Mode '2G5' uses lane0 in 2.5G mode and leaves lane1 disabled.
+	  Mode 'both' configures both lanes for 1G operation so 2 macs can
+	  be connected. Mode '0' is used to configure only XPCS0, this can be
+	  used in 'sgmii' mode (one lane emac 1G other lane disabled) or
+	  in 'rc&sgmii'/'ep&sgmii' (one lane PCIeX1, the other lane SGMII 1G).
+	  Same configuration is used for '1', which corresponds to XPCS1.
+	  Config 'fmhz' specifies frequency used as reference. In case of
+	  2.5G mode it is required to set this 125, if used in SGMII/PCIe
+	  combo mode 'fmhz' has to be 100 (PCIe ignores this and always
+	  uses 100). In case the SerDes is configured as SGMII and not in
+	  2.5G mode either 100 or 125 can be used in 'fmhz'.
+	  Available 'xpcs_mode' are dependent on platform:
+		s32g274a - supports '0','1','both' and '2G5'
+		s32r45   - supports '0' and '2G5'
+	  By default, legacy HWCONFIG was:
+	  "pcie0:mode=rc,clock=ext;pcie1:mode=sgmii,clock=ext,fmhz=125,xpcs_mode=2G5"
+	  This has lots of limitations, and has been redesigned.
+
+config S32CC_CONFIG_FILE
+	string
+	default "arch/arm/mach-s32/s32-cc/s32cc.cfg"
+
+config TARGET_TYPE_S32CC_EMULATOR
+	bool
+	default n
+
+config LMB_MAX_REGIONS
+	default 16
+
+if TARGET_TYPE_S32CC_EMULATOR
+config BAUDRATE
+	default 7812500
+endif
+
+config SF_DEFAULT_BUS
+	default 6
+
+config SF_DEFAULT_CS
+	default 0
+
+if SD_BOOT
+config ENV_IS_IN_MMC
+	default y
+
+config ENV_SIZE
+	default 0x2000
+endif
+
+if QSPI_BOOT
+config ENV_IS_IN_SPI_FLASH
+	default y
+
+config ENV_SIZE
+	default 0x10000
+
+config ERR051257_WORKAROUND
+	bool "ERR051257 erratum workaround"
+	default y if ARCH_S32G2 && !TARGET_S32G2XXAEVB && !TARGET_S32G2XXAEVB3
+	help
+	  Enable workaround for ERR051257 erratum.
+	  The QSPI boot flow will hang if the QSPI memory will rise any ECC
+	  error interrupt. As a software solution for this issue, the pins
+	  QSPI_INTA_b and QSPI_INTB_b are configured as GPIO from DCD and the
+	  images(QSPI parameters for BootROM, DCD, HSE FW, etc) have an unused
+	  space of 1K between them.
+endif
+
+config XEN_SUPPORT
+	bool "Enable Xen Hypervisor support"
+	default n
+	help
+	  Set Xen Image, fdts load addresses and U-Boot environment variables in
+	  order for U-Boot to directly load the Xen Image which will use a given
+	  Kernel Image as Dom0.
+
+config FDT_HS400_FIXUP
+	bool "Dynamically enable eMMC HS400 mode in U-Boot device-tree"
+	default n
+	help
+	  This option can be used in order to speed up the boot process for S32CC
+	  boards which support eMMC HS400 mode. This option modifies the U-Boot
+	  live tree at runtime, enabling higher speed modes for the uSDHC controller.
+	  Enable this option only if the S32CC board has support for
+	  eMMC HS*00 modes (has VCCQ 1.8 eMMC voltage support).
+
+config LINUX_FDT_HS400_FIXUP
+	bool "Dynamically enable eMMC HS400 mode in Linux device-tree"
+	default n
+	help
+	  This option can be used in order to speed up the boot process for S32CC
+	  boards which support eMMC HS400 mode, by enabling it for the uSDHC
+	  controller in the Linux OS's device tree node.
+
+config LINUX_LOG_DISABLE
+	bool "Disable Linux Kernel boot time logging"
+	default n
+	help
+	  This option can be used in order to speed up the boot process
+	  by disabling most of Linux Kernel boot time logging messages.
+
+config NO_LINUX_EARLY_CONSOLE
+	bool "Disable Linux Kernel early console"
+	default n
+	help
+	  This option can be used in order to speed up the boot process
+	  by disabling the Linux Kernel early console
+	  (earlycon Linux Kernel command line parameter).
+
+config QUICK_BOOT
+	bool "Enable several optimizations in U-Boot environment which speeds up the boot process."
+	default n
+	imply LINUX_FDT_HS400_FIXUP
+	imply LINUX_LOG_DISABLE
+	imply NO_LINUX_EARLY_CONSOLE
+	imply FDT_HS400_FIXUP
+
+endif
+
+source "arch/arm/mach-s32/s32g2/Kconfig"
+source "arch/arm/mach-s32/s32g3/Kconfig"
+source "arch/arm/mach-s32/s32r45/Kconfig"
+source "board/nxp/s32-cc/Kconfig"
