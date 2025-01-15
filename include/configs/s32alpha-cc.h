@@ -3,7 +3,7 @@
  * Copyright 2022-2024 NXP
  */
 #ifndef __S32ALPHA_CC_H__
-#define __S32ALPHA+CC_H__
+#define __S32ALPHA_CC_H__
 
 #include <configs/s32alpha.h>
 
